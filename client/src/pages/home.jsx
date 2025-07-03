@@ -1,8 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
 import Navbar from "../components/Navbar";
+import { AppContext } from "../context/Appcontext";
 
 export default function Home() {
+  const { backendUrl, isLoggedIn } = useContext(AppContext);
+  console.log(backendUrl)
+  console.log(isLoggedIn)
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 to-purple-50">
       <Navbar />
@@ -28,17 +33,23 @@ export default function Home() {
                 Your <span className="text-blue-600 font-semibold">smart</span> job search assistant
               </h2>
               <p className="max-w-2xl mx-auto text-lg text-gray-600 mb-10 relative">
-                <span className="absolute -left-6 top-2 text-4xl opacity-20">“</span>
+
+                <span className="absolute -left-6 top-2 text-4xl opacity-20">"</span>
                 Discover top companies. Automate your applications. Land your dream role faster.
-                <span className="absolute -right-6 bottom-2 text-4xl opacity-20">”</span>
+                <span className="absolute -right-6 bottom-2 text-4xl opacity-20">"</span>
+
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
-                  to="/login"
+
+                  to={isLoggedIn ? "/dashboard" : "/login"}
                   className="relative overflow-hidden group bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
                 >
-                  <span className="relative z-10">Get Started — It's Free</span>
+                  <span className="relative z-10">
+                    {isLoggedIn ? "Go to Dashboard" : "Get Started — It's Free"}
+                  </span>
+
                   <span className="absolute inset-0 bg-gradient-to-r from-blue-700 to-purple-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
                 </Link>
                 <Link
@@ -109,10 +120,10 @@ export default function Home() {
               Join thousands of students and professionals who found their dream roles with AutoApply
             </p>
             <Link
-              to="/signup"
+              to={isLoggedIn ? "/dashboard" : "/signup"}
               className="inline-block bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold shadow-lg hover:bg-gray-100 hover:scale-105 transition-all duration-300"
             >
-              Create Free Account
+              {isLoggedIn ? "Go to Dashboard" : "Create Free Account"}
             </Link>
           </div>
         </section>
