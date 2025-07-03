@@ -33,6 +33,7 @@ const App = () => {
     <div>
       <ToastContainer/>
       <Routes>
+
         {/* Public routes */}
         <Route path="/" element={<Home />} />
         <Route path="/search" element={<><Navbar /><JobSearch /></>} />
