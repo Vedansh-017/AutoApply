@@ -38,12 +38,12 @@ export default function Navbar() {
             
             {isLoggedIn && (
               <>
-                <Link 
+                {/* <Link 
                   to="/dashboard" 
                   className="px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-800 transition duration-300"
                 >
                   Dashboard
-                </Link>
+                </Link> */}
                 <Link 
                   to="/profile" 
                   className="px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-800 transition duration-300"
@@ -55,6 +55,12 @@ export default function Navbar() {
                   className="px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-800 transition duration-300"
                 >
                   Saved Jobs
+                </Link>
+                <Link 
+                  to="/search" 
+                  className="px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-800 transition duration-300"
+                >
+                  Search Jobs
                 </Link>
               </>
             )}

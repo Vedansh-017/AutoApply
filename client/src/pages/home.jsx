@@ -43,11 +43,11 @@ export default function Home() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
 
-                  to={isLoggedIn ? "/dashboard" : "/login"}
+                  to={isLoggedIn ? "/profile" : "/login"}
                   className="relative overflow-hidden group bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
                 >
                   <span className="relative z-10">
-                    {isLoggedIn ? "Go to Dashboard" : "Get Started — It's Free"}
+                    {isLoggedIn ? "Go to Profile" : "Get Started — It's Free"}
                   </span>
 
                   <span className="absolute inset-0 bg-gradient-to-r from-blue-700 to-purple-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
