@@ -36,25 +36,13 @@ export default function JobSearch() {
       );
       setJobs(data.jobs || []);
     } catch (err) {
-      toast.error("Error fetching jobs");
+      toast.error("Error fetching jobs"+ err);
     }
   };
 
-  const handleApply = async (job) => {
-    if (!isLoggedIn) {
-      toast.warning("Please log in to apply.");
-      return;
-    }
-    try {
-      const { data } = await axios.post(
-        `${backendUrl}/api/apply/submit`,
-        { job },
-        { withCredentials: true }
-      );
-      data.success ? toast.success("Applied successfully!") : toast.error("Apply failed.");
-    } catch (err) {
-      toast.error("Error applying for job");
-    }
+  const handleApply = (job) => {
+    window.location.href = job;
+   
   };
 
   const toggleFavorite = (job) => {
@@ -83,6 +71,8 @@ export default function JobSearch() {
   useEffect(() => {
     fetchJobs();
   }, [page]);
+
+  console.log(jobs)
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
@@ -165,8 +155,8 @@ export default function JobSearch() {
               </p>
               <div className="flex gap-3 mt-2">
                 <button
-                  onClick={() => handleApply(job)}
-                  className="bg-green-600 text-white px-3 py-1 rounded"
+                  onClick={() => handleApply(job.job_url)}
+                  className="bg-green-600 text-white px-3 py-1 rounded cursor-pointer"
                 >
                   Apply
                 </button>
