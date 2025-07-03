@@ -13,6 +13,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import JobSearch from './pages/JobSearch.jsx'
 import SavedJobs from './pages/SavedJobs.jsx'
 import Home from "./pages/home.jsx";
+import Navbar from './components/Navbar.jsx';
 const App = () => {
   const { isLoggedIn } = useContext(AppContext);
   return (
@@ -20,13 +21,13 @@ const App = () => {
       <ToastContainer/>
       <Routes>
        <Route path="/" element={<Home />} />
-       <Route path="/search" element={<JobSearch />} />
+       <Route path="/search" element={<><Navbar /><JobSearch /></>} />
        <Route path='/login' element={<Login/>} />
-        <Route path='/email-verify' element={<EmailVerify/>} />
+        <Route path='/email-verify' element={<><Navbar /><EmailVerify/></>} />
         <Route path='/reset-password' element={<ResetPassword/>} />
-         <Route path="/profile" element={isLoggedIn ? <Profile /> : <Navigate to="/login" />} />
-        <Route path="/dashboard" element={isLoggedIn ? <Dashboard /> : <Navigate to="/login" />} />
-         <Route path="/saved" element={isLoggedIn ? <SavedJobs /> : <Navigate to="/login" />} />
+         <Route path="/profile" element={isLoggedIn ? <><Navbar /> <Profile /></> : <Navigate to="/login" />} />
+        <Route path="/dashboard" element={isLoggedIn ?<><Navbar /> <Dashboard /></> : <Navigate to="/login" />} />
+         <Route path="/saved" element={isLoggedIn ? <><Navbar /><SavedJobs /></> : <Navigate to="/login" />} />
         {/* fallback route */}
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
