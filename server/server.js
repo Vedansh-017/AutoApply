@@ -20,14 +20,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 // This code imports necessary modules, sets up an Express server, and connects to a MongoDB database.
 // It also configures middleware for parsing JSON and cookies.
-const allowedOrigins = [
-    'http://localhost:5173', // React app
-    'https://your-production-domain.com' // Replace with your production domain
-];
-app.use(cors({
-    origin: allowedOrigins,
-    credentials: true
-}));
+
+app.use(cors(
+    
+));
 
 // api end points
 // This code sets up CORS middleware to allow cross-origin requests with credentials.
