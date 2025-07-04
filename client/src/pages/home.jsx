@@ -120,10 +120,10 @@ export default function Home() {
               Join thousands of students and professionals who found their dream roles with AutoApply
             </p>
             <Link
-              to={isLoggedIn ? "/dashboard" : "/signup"}
+              to={isLoggedIn ? "/profile" : "/signup"}
               className="inline-block bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold shadow-lg hover:bg-gray-100 hover:scale-105 transition-all duration-300"
             >
-              {isLoggedIn ? "Go to Dashboard" : "Create Free Account"}
+              {isLoggedIn ? "Go to Profile" : "Create Free Account"}
             </Link>
           </div>
         </section>
