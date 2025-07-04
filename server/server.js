@@ -20,10 +20,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 // This code imports necessary modules, sets up an Express server, and connects to a MongoDB database.
 // It also configures middleware for parsing JSON and cookies.
-
-app.use(cors(
-    
-));
+const allowedOrigins = [
+    'http://localhost:5173', // React app
+    'https://auto-apply-lake.vercel.app/' // Replace with your production domain
+];
+app.use(cors({
+    origin: allowedOrigins,
+    credentials: true
+}));
 
 // api end points
 // This code sets up CORS middleware to allow cross-origin requests with credentials.
