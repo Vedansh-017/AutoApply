@@ -21,12 +21,13 @@ app.use(cookieParser());
 // This code imports necessary modules, sets up an Express server, and connects to a MongoDB database.
 // It also configures middleware for parsing JSON and cookies.
 const allowedOrigins = [
-    'http://localhost:5173', // React app
-    'https://auto-apply-lake.vercel.app/' // Replace with your production domain
+  "https://auto-apply-lake.vercel.app",
+  "http://localhost:5173"
 ];
+
 app.use(cors({
-    origin: allowedOrigins,
-    credentials: true
+  origin: allowedOrigins,
+  credentials: true,
 }));
 
 // api end points
