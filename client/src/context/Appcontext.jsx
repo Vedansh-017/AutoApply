@@ -8,7 +8,7 @@ export const AppContext = createContext();
 export const AppContextProvider = (props) => {
     const [isLoading, setIsLoading] = useState(true);
     axios.defaults.withCredentials = true;
-    const backendUrl = "https://autoapply-pcsgo.ondigitalocean.app/";
+    const backendUrl = "https://autoapply-pcsgo.ondigitalocean.app";
     const [isLoggedIn, setIsLoggedIn] = useState(
         localStorage.getItem('isLoggedIn') === 'true'
     );
