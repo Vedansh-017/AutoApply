@@ -14,6 +14,7 @@ import JobSearch from './pages/JobSearch.jsx'
 import SavedJobs from './pages/SavedJobs.jsx'
 import Home from "./pages/home.jsx";
 import Navbar from './components/Navbar.jsx';
+import AppliedJobs from './pages/AppledJobs.jsx';
 const App = () => {
   const { isLoggedIn } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(true);
@@ -40,12 +41,13 @@ const App = () => {
         <Route path='/login' element={<Login/>} />
         <Route path='/email-verify' element={<><Navbar /><EmailVerify/></>} />
         <Route path='/reset-password' element={<ResetPassword/>} />
+        <Route path='/applied' element={<><Navbar /><AppliedJobs/></>} />
         
         {/* Protected routes */}
         <Route path="/profile" element={isLoggedIn ? <><Navbar /> <Profile /></> : <Navigate to="/login" />} />
         <Route path="/dashboard" element={isLoggedIn ?<><Navbar /> <Dashboard /></> : <Navigate to="/login" />} />
         <Route path="/saved" element={isLoggedIn ? <><Navbar /><SavedJobs /></> : <Navigate to="/login" />} />
-        
+        {/* <Route path="/applied" element={isLoggedIn ? <><Navbar /><AppliedJobs /></> : <Navigate to="/login" />} /> */}
         {/* fallback route */}
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>

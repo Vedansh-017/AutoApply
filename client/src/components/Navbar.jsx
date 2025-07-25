@@ -84,7 +84,7 @@ export default function Navbar() {
                   Login
                 </Link>
                 <Link 
-                  to="/signup" 
+                  to="/login" 
                   className="px-4 py-2 bg-white text-blue-700 rounded-md text-sm font-medium hover:bg-gray-100 transition duration-300 shadow-sm"
                 >
                   Sign Up

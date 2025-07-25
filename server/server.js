@@ -10,6 +10,7 @@ import applyRoutes from "./routes/apply.js";
 import authRouter from './routes/authRoutes.js';
 import userRouter from './routes/userRoutes.js';
 import externalApiRoutes from "./routes/externalApi.js";
+import appliedJobRoutes from "./routes/appliedJobs.js";
 
 const app= express();
 const port = process.env.PORT || 4000;
@@ -42,8 +43,7 @@ app.use("/api/scraper", scraperRoutes);
 app.use("/api/profile", profileRoutes);
 app.use("/api/apply", applyRoutes);
 app.use("/api/external", externalApiRoutes);
-
-
+app.use("/api/apply", appliedJobRoutes);
 
 app.listen(port, () => {    
     console.log(`Server is running on port ${port}`);
