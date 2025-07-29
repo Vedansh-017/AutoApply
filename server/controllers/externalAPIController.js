@@ -2,12 +2,16 @@ import axios from "axios";
 
 export const fetchJobs = async (req, res) => {
   try {
+    console.log("📥 Incoming request to /api/external/jobs");
+    console.log("📦 Request Body:", req.body);
+    console.log("🔑 RAPIDAPI_KEY Loaded:", !!process.env.RAPIDAPI_KEY);
+
     const {
       search_term = "web",
       location = "india",
       results_wanted = 10,
       job_type = "fulltime",
-      site_name = ["indeed", "linkedin", "glassdoor"],
+      site_name = "indeed,linkedin,glassdoor", // string, not array
       distance = 50,
       is_remote = false,
       linkedin_fetch_description = false,
@@ -36,9 +40,19 @@ export const fetchJobs = async (req, res) => {
       }
     );
 
+    console.log("✅ API response received successfully");
     res.status(200).json(response.data);
   } catch (error) {
-    console.error("❌ Jobs API Error:", error?.response?.data || error.message);
-    res.status(500).json({ error: "Failed to fetch jobs from API" });
+    console.error("❌ Jobs API Error:", {
+      status: error?.response?.status,
+      data: error?.response?.data,
+      headers: error?.response?.headers,
+      message: error.message,
+    });
+
+    res.status(500).json({ 
+      error: "Failed to fetch jobs from API", 
+      details: error?.response?.data || error.message 
+    });
   }
 };

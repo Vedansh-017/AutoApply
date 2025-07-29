@@ -16,7 +16,7 @@ export const AppContextProvider = (props) => {
 
     const getAuthState = useCallback(async () => {
         try {
-            const { data } = await await axios.get(backendUrl + '/api/auth/is-auth', {
+            const { data } = await axios.get(backendUrl + '/api/auth/is-auth', {
   withCredentials: true
 });
             if (data.success) {

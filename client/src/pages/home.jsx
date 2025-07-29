@@ -1,21 +1,90 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
-import { useContext } from "react";
 import Navbar from "../components/Navbar";
 import { AppContext } from "../context/Appcontext";
+import SubscriptionModal from "../components/SubscriptionModal";
 
 export default function Home() {
-  const { backendUrl, isLoggedIn } = useContext(AppContext);
-  console.log(backendUrl)
-  console.log(isLoggedIn)
+  const { isLoggedIn, backendUrl, userData } = useContext(AppContext);
+  const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
+  const [searchCount, setSearchCount] = useState(0);
+  
+  useEffect(() => {
+    const fetchSearchCount = async () => {
+      if (isLoggedIn && userData) {
+        try {
+          const response = await fetch(`${backendUrl}/api/user/search-count`, {
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+          });
+          const data = await response.json();
+          setSearchCount(data.count);
+          
+          if (data.count >= 2 && !userData.isSubscribed) {
+            setShowSubscriptionModal(true);
+          }
+        } catch (error) {
+          console.error("Error fetching search count:", error);
+        }
+      }
+    };
+
+    fetchSearchCount();
+  }, [isLoggedIn, userData, backendUrl]);
+
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 to-purple-50">
       <Navbar />
+      
+      {/* Subscription Modal */}
+      {showSubscriptionModal && (
+        <SubscriptionModal 
+          onClose={() => setShowSubscriptionModal(false)}
+          plans={[
+            {
+              name: "Basic",
+              price: "$9.99/month",
+              features: ["Unlimited searches", "10 applications/month", "Basic analytics"]
+            },
+            {
+              name: "Pro",
+              price: "$19.99/month",
+              features: ["Unlimited searches", "Unlimited applications", "Advanced analytics", "Priority support"]
+            }
+          ]}
+        />
+      )}
+
+      {/* Search Limit Alert */}
+      {isLoggedIn && searchCount >= 1 && (
+        <div className="max-w-7xl mx-auto px-4 py-4">
+          <div className={`${searchCount >= 2 ? 'bg-red-50 border-red-400' : 'bg-yellow-50 border-yellow-400'} border-l-4 p-4 rounded-r`}>
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <svg 
+                  className={`h-5 w-5 ${searchCount >= 2 ? 'text-red-400' : 'text-yellow-400'}`} 
+                  fill="currentColor" 
+                  viewBox="0 0 20 20"
+                >
+                  <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <div className="ml-3">
+                <p className={`text-sm ${searchCount >= 2 ? 'text-red-700' : 'text-yellow-700'}`}>
+                  {searchCount === 1 
+                    ? "You've used 1 free search. You get 1 more free search before needing to subscribe."
+                    : "You've used all free searches. Subscribe for unlimited access."}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Hero Section */}
       <main className="flex-grow">
         <section className="relative overflow-hidden">
-          {/* Animated gradient background */}
           <div
             className="absolute inset-0 bg-gradient-to-r from-blue-400/20 to-purple-400/20"
             style={{
@@ -27,34 +96,34 @@ export default function Home() {
           <div className="relative max-w-7xl mx-auto px-6 py-24 sm:py-32 lg:px-8 text-center">
             <div className="animate-fade-in-up">
               <h1 className="text-4xl sm:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 mb-6 leading-tight">
-                🚀 AutoApply
+                AutoApply
               </h1>
               <h2 className="text-xl sm:text-2xl font-medium text-gray-700 mb-8">
                 Your <span className="text-blue-600 font-semibold">smart</span> job search assistant
               </h2>
               <p className="max-w-2xl mx-auto text-lg text-gray-600 mb-10 relative">
-
                 <span className="absolute -left-6 top-2 text-4xl opacity-20">"</span>
                 Discover top companies. Automate your applications. Land your dream role faster.
                 <span className="absolute -right-6 bottom-2 text-4xl opacity-20">"</span>
-
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
-
                   to={isLoggedIn ? "/profile" : "/login"}
                   className="relative overflow-hidden group bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
                 >
                   <span className="relative z-10">
                     {isLoggedIn ? "Go to Profile" : "Get Started — It's Free"}
                   </span>
-
                   <span className="absolute inset-0 bg-gradient-to-r from-blue-700 to-purple-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
                 </Link>
                 <Link
                   to="/search"
-                  className="relative overflow-hidden group bg-white text-gray-800 px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-200"
+                  className={`relative overflow-hidden group bg-white text-gray-800 px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border ${
+                    searchCount >= 2 && !userData?.isSubscribed 
+                      ? 'border-red-300' 
+                      : 'border-gray-200'
+                  }`}
                 >
                   <span className="relative z-10">Explore Jobs</span>
                   <span className="absolute inset-0 bg-gray-100 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
@@ -120,10 +189,12 @@ export default function Home() {
               Join thousands of students and professionals who found their dream roles with AutoApply
             </p>
             <Link
-              to={isLoggedIn ? "/profile" : "/signup"}
+              to={isLoggedIn ? (searchCount >= 2 ? "/subscribe" : "/profile") : "/signup"}
               className="inline-block bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold shadow-lg hover:bg-gray-100 hover:scale-105 transition-all duration-300"
             >
-              {isLoggedIn ? "Go to Profile" : "Create Free Account"}
+              {isLoggedIn 
+                ? (searchCount >= 2 ? "Upgrade Now" : "Go to Profile") 
+                : "Create Free Account"}
             </Link>
           </div>
         </section>
@@ -134,7 +205,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-4 md:mb-0">
-              <p className="text-lg font-medium">🚀 AutoApply</p>
+              <p className="text-lg font-medium">AutoApply</p>
               <p className="text-sm text-blue-200 mt-1">
                 &copy; {new Date().getFullYear()} All rights reserved
               </p>
