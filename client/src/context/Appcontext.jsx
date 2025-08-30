@@ -8,28 +8,35 @@ export const AppContext = createContext();
 export const AppContextProvider = (props) => {
     const [isLoading, setIsLoading] = useState(true);
     axios.defaults.withCredentials = true;
-    const backendUrl = "https://autoapply-pcsgo.ondigitalocean.app";
+    // const backendUrl = "https://autoapply-pcsgo.ondigitalocean.app" || "http://localhost:4000";
+    const backendUrl = "http://localhost:4000"; // For local development
     const [isLoggedIn, setIsLoggedIn] = useState(
         localStorage.getItem('isLoggedIn') === 'true'
     );
     const [userData, setUserData] = useState(null);
 
-    const getAuthState = useCallback(async () => {
-        try {
-            const { data } = await axios.get(backendUrl + '/api/auth/is-auth', {
-  withCredentials: true
-});
-            if (data.success) {
-                setIsLoggedIn(true);
-                await getUserData();
-            }
-            setIsLoading(false);
-        } catch (error) {
-            setIsLoading(false);
-            console.log(error)
-            // ... error handling
-        }
-    }, [backendUrl]);
+const getAuthState = async () => {
+  try {
+    const { data } = await axios.get(backendUrl + '/api/auth/is-auth', {
+      withCredentials: true
+    });
+
+    if (data.success) {
+      setIsLoggedIn(true);
+      getUserData();
+    } else {
+      setIsLoggedIn(false);
+      setUserData(null);
+    }
+  } catch (error) {
+    // User not authenticated, just reset state — no need to toast
+    if (error.response?.status !== 401) {
+      console.error("Auth check failed:", error.message);
+    }
+    setIsLoggedIn(false);
+    setUserData(null);
+  }
+};
 
     const getUserData = useCallback(async () => {
         try {
@@ -55,7 +62,8 @@ export const AppContextProvider = (props) => {
         setIsLoggedIn,
         userData,
         setUserData,
-        getUserData
+        getUserData,
+         isLoading
     };
 
     return (

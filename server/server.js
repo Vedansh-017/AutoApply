@@ -3,9 +3,6 @@ import cors from 'cors';
 import 'dotenv/config';
 import cookieParser from 'cookie-parser';
 import connectDB from './config/mongodb.js';
-
-import scraperRoutes from "./routes/scraper.js";
-import profileRoutes from "./routes/profile.js";
 import applyRoutes from "./routes/apply.js";
 import authRouter from './routes/authRoutes.js';
 import userRouter from './routes/userRoutes.js';
@@ -39,8 +36,6 @@ app.get('/', (req, res) => {
 
 app.use('/api/auth',authRouter);
 app.use('/api/user',userRouter);
-app.use("/api/scraper", scraperRoutes);
-app.use("/api/profile", profileRoutes);
 app.use("/api/apply", applyRoutes);
 app.use("/api/external", externalApiRoutes);
 app.use("/api/apply", appliedJobRoutes);

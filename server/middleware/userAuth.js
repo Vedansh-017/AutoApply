@@ -4,8 +4,9 @@ const userAuth = async (req, res, next) => {
      const {token} = req.cookies; // Extract token from cookies
     
     if (!token) {
-        return res.status(401).json({success: false, message: "Unauthorized access" });
-    }
+  return res.json({ success: false, message: "Not logged in" });
+}
+
 
     try {
         const tokendecoded = jwt.verify(token, process.env.JWT_SECRET); // Verify the token using JWT secret

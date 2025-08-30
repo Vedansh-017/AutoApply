@@ -2,59 +2,18 @@ import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { AppContext } from "../context/Appcontext";
-import SubscriptionModal from "../components/SubscriptionModal";
+
 
 export default function Home() {
   const { isLoggedIn, backendUrl, userData } = useContext(AppContext);
-  const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
+
   const [searchCount, setSearchCount] = useState(0);
   
-  useEffect(() => {
-    const fetchSearchCount = async () => {
-      if (isLoggedIn && userData) {
-        try {
-          const response = await fetch(`${backendUrl}/api/user/search-count`, {
-            headers: {
-              'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }
-          });
-          const data = await response.json();
-          setSearchCount(data.count);
-          
-          if (data.count >= 2 && !userData.isSubscribed) {
-            setShowSubscriptionModal(true);
-          }
-        } catch (error) {
-          console.error("Error fetching search count:", error);
-        }
-      }
-    };
 
-    fetchSearchCount();
-  }, [isLoggedIn, userData, backendUrl]);
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 to-purple-50">
       <Navbar />
-      
-      {/* Subscription Modal */}
-      {showSubscriptionModal && (
-        <SubscriptionModal 
-          onClose={() => setShowSubscriptionModal(false)}
-          plans={[
-            {
-              name: "Basic",
-              price: "$9.99/month",
-              features: ["Unlimited searches", "10 applications/month", "Basic analytics"]
-            },
-            {
-              name: "Pro",
-              price: "$19.99/month",
-              features: ["Unlimited searches", "Unlimited applications", "Advanced analytics", "Priority support"]
-            }
-          ]}
-        />
-      )}
 
       {/* Search Limit Alert */}
       {isLoggedIn && searchCount >= 1 && (
@@ -96,7 +55,7 @@ export default function Home() {
           <div className="relative max-w-7xl mx-auto px-6 py-24 sm:py-32 lg:px-8 text-center">
             <div className="animate-fade-in-up">
               <h1 className="text-4xl sm:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 mb-6 leading-tight">
-                AutoApply
+                Click2Apply
               </h1>
               <h2 className="text-xl sm:text-2xl font-medium text-gray-700 mb-8">
                 Your <span className="text-blue-600 font-semibold">smart</span> job search assistant
@@ -205,7 +164,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-4 md:mb-0">
-              <p className="text-lg font-medium">AutoApply</p>
+              <p className="text-lg font-medium">Click2Apply</p>
               <p className="text-sm text-blue-200 mt-1">
                 &copy; {new Date().getFullYear()} All rights reserved
               </p>
